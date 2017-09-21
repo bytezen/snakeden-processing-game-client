@@ -12,11 +12,19 @@ class Player {
     this.c = c;
   }
   
+  Player(String name, float x, float y, color c, Direction d) {
+    this(name,x,y,c);
+    this.d = d;
+  }
+  
   PVector getPos() { return pos; }
   
   //TODO: implement update based on direction
   PVector update() {
-    switch(d) {
+    prevPos.x = pos.x;
+    prevPos.y = pos.y;    
+    
+    switch(this.d) {
       case UP:
         pos.y -= speed;
         break;
@@ -32,6 +40,7 @@ class Player {
       case NONE:
         break;
     }
+
     return pos;
   }
   
