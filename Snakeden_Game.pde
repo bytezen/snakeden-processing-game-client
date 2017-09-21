@@ -1,6 +1,6 @@
 import java.util.Map;
 
-boolean DEV = false;
+boolean DEV = true;
 
 Map<String, Player> playerChannelMap = new HashMap<String, Player>();
 
@@ -8,11 +8,30 @@ ArrayList<Player> players;
 static int PLAYERS = 20;
 PGraphics mainG, playerLayer;
 
+//color to compare for collision
+int BGCOLOR = 0; 
+
 void  update() {
   playerLayer.loadPixels();
+  int pxlIndex, pxlColor;
 
   for ( Player p : players ) {
-    p.update();
+    if (p.alive) {
+      p.update();
+      //check to see if we are on a color
+      //pixel at position
+      //pxlIndex = floor(p.getPos().y*width + p.getPos().x); 
+      //pxlColor = playerLayer.pixels[pxlIndex];
+      //if (red(pxlColor) + green(pxlColor) + blue(pxlColor) > 0 ) {
+      //  p.die();
+      //}
+      if(onColoredPixel(int(p.getPos().x),int(p.getPos().y), playerLayer, BGCOLOR)) {
+        p.die();
+      }
+      
+      //pixel at position is colored
+      //if so the p.die()
+    }
   }
 }
 
@@ -50,8 +69,12 @@ void setup() {
   rect(3, 3, width-6, height-6);
   textSize(10);
 
+  //setup player drawing layer
   mainG = getGraphics();
   playerLayer = mainG;
+  BGCOLOR = color(255);
+  background(BGCOLOR);
+
 
 
   spacebrewConnect();
@@ -72,8 +95,22 @@ void  draw() {
   }
 }
 
-boolean collision() {
-  return false;
+boolean onColoredPixel(int x, int y,PGraphics layer, int bgColor) {
+  int pxlIndex = floor(y*width + x); 
+  if(pxlIndex >= layer.pixels.length) {
+    return false;
+  }
+  
+  int pxlColor = layer.pixels[pxlIndex];
+  int R = int(red(BGCOLOR)),
+      G = int(green(BGCOLOR)),
+      B = int(blue(BGCOLOR));
+  println("[onColoredPixel BGCOLOR (r,g,b)] " + R + "," + G + "," + B);
+  println("[onColoredPixel (r,g,b)] " + red(pxlColor) + "," + green(pxlColor) + "," + blue(pxlColor));
+  return ( ( red(pxlColor) != R ) && 
+           ( green(pxlColor) != G) &&
+           ( blue(pxlColor) != B ));
+    
 }
 
 public enum Direction {
@@ -86,10 +123,10 @@ String getPlayerName(int i) {
 
 Direction directionFromString(String dir) {
 
-  if(dir.equals("up")) return Direction.UP;
-  if(dir.equals("down")) return Direction.DOWN;
-  if(dir.equals("left")) return Direction.LEFT;
-  if(dir.equals("right")) return Direction.RIGHT;
+  if (dir.equals("up")) return Direction.UP;
+  if (dir.equals("down")) return Direction.DOWN;
+  if (dir.equals("left")) return Direction.LEFT;
+  if (dir.equals("right")) return Direction.RIGHT;
 
   return Direction.NONE;
 }
