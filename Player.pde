@@ -34,18 +34,20 @@ class Player {
     prevPos.x = pos.x;
     prevPos.y = pos.y;    
 
+    int dPos = PLAYER_SIZE * speed;
+
     switch(this.direction) {
     case UP:
-      pos.y -= speed;
+      pos.y -= dPos;
       break;
     case DOWN:
-      pos.y += speed;
+      pos.y += dPos;
       break;
     case LEFT:
-      pos.x -= speed;
+      pos.x -= dPos;
       break;
     case RIGHT:
-      pos.x += speed;
+      pos.x += dPos;
       break;
     case NONE:
       break;
@@ -64,18 +66,18 @@ class Player {
 
     if (!alive) {      
       pg.fill(255, 0, 0);
-      pg.textAlign(CENTER,CENTER);
+      pg.textAlign(CENTER, CENTER);
       pg.text("x", pos.x, pos.y);
       return;
     } else {
-
+      pg.strokeWeight(PLAYER_SIZE);
       pg.stroke(c);
       pg.fill(c);
       if (prevPos.x != NOTSET && prevPos.y != NOTSET) {
         pg.line(prevPos.x, prevPos.y, pos.x, pos.y);
       }
     }
-    
+
     pg.popStyle();
   }
 

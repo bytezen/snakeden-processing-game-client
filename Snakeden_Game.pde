@@ -6,6 +6,8 @@ Map<String, Player> playerChannelMap = new HashMap<String, Player>();
 
 ArrayList<Player> players;
 static int PLAYERS = 20;
+static int PLAYER_SIZE = 2;
+
 PGraphics mainG, playerLayer;
 
 //color to compare for collision
@@ -97,7 +99,7 @@ void  draw() {
 
 boolean onColoredPixel(int x, int y,PGraphics layer, int bgColor) {
   int pxlIndex = floor(y*width + x); 
-  if(pxlIndex >= layer.pixels.length) {
+  if(pxlIndex >= layer.pixels.length || pxlIndex < 0) {
     return false;
   }
   
