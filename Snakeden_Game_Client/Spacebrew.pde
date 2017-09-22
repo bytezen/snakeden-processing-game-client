@@ -11,6 +11,9 @@ void initSpacebrewConnection() {
 }
 
 void spacebrewConnect() { 
+  //stuff we want to share
+  //sb.addPublish("getColor","string",nextColor);
+  //we will give you colors
   sb.connect(SB_SERVER, SB_NAME, SB_DESCRIPTION);
 }
 
